@@ -72,14 +72,11 @@ export default (app: Router) => {
       });
   });
 
-
   route.get('/reloc_initialize', async (req, res, next) => {
     const reloc_x = req.query.x;
     const reloc_y = req.query.y;
     const reloc_z = req.query.z;
     const reloc_angle = req.query.angle;
-
-
 
     if (validParam(reloc_x) && validParam(reloc_y) && validParam(reloc_z) && validParam(reloc_angle)) {
       await Commands.initializeReloc(reloc_x as string, reloc_y as string, reloc_z as string, reloc_angle as string)
@@ -89,20 +86,28 @@ export default (app: Router) => {
         .catch(() => {
           return res.status(500).send();
         });
-
     } else {
       return res.status(422).send();
     }
-
-
   });
-
 
   function validParam(param: unknown): boolean {
     const regex = /^[0-9]+([\.,][0-9])?[0-9]*$/;
-  
-    return param !== undefined && typeof param === 'string' && param.match(regex) !== null
+    return param !== undefined && typeof param === 'string' && param.match(regex) !== null;
   }
+
+  route.get('/set_profile', async (req, res, next) => {
+    const state = req.query.state;
+    const profile = req.query.profile;
+
+    await Commands.setProfile(state as string, profile as string)
+      .then(() => {
+        return res.status(200).send();
+      })
+      .catch(() => {
+        return res.status(500).send();
+      });
+  });
 
   route.get('/reloc_stop', async (req, res, next) => {
     await Commands.stopReloc()
@@ -133,8 +138,6 @@ export default (app: Router) => {
         return res.status(500).send();
       });
   });
-
-
 
   route.get('/stop_all', async (req, res, next) => {
     await Commands.stopAll()
