@@ -50,7 +50,7 @@ export default (app: Router) => {
       });
   });
 
-  route.get('/load_map/:map', async (req, res, next) => {
+  route.get('/load_reloc/:map', async (req, res, next) => {
     const mapName = req.params.map;
     await Commands.loadMap(mapName)
       .then(() => {
@@ -72,6 +72,16 @@ export default (app: Router) => {
       });
   });
 
+  route.get('/visualize_map/:map', async (req, res, next) => {
+    const mapName = req.params.map;
+    await Commands.visualizeMap(mapName)
+      .then(() => {
+        return res.status(200).send();
+      })
+      .catch(() => {
+        return res.status(500).send();
+      });
+  });
 
   route.get('/reloc_initialize', async (req, res, next) => {
     const reloc_x = req.query.x;
@@ -100,7 +110,7 @@ export default (app: Router) => {
 
   function validParam(param: unknown): boolean {
     const regex = /^[0-9]+([\.,][0-9])?[0-9]*$/;
-  
+
     return param !== undefined && typeof param === 'string' && param.match(regex) !== null
   }
 

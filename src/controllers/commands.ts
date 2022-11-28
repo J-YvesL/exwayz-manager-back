@@ -43,7 +43,7 @@ export function stopMap(): Promise<void> {
 
 export function loadMap(mapName: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.LOAD_MAP.replace('{mapName}', mapName))
+    cmd(ExwayzManagerCommands.LOAD_RELOC.replace('{mapName}', mapName))
       .then(() => {
         resolve();
       })
@@ -54,6 +54,16 @@ export function loadMap(mapName: string): Promise<void> {
 export function deleteMap(mapName: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     cmd(ExwayzManagerCommands.DELETE_MAP.replace('{mapName}', mapName))
+      .then(() => {
+        resolve();
+      })
+      .catch(() => reject());
+  });
+}
+
+export function visualizeMap(mapName: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    cmd(ExwayzManagerCommands.VISUALIZE_MAP.replace('{mapName}', mapName))
       .then(() => {
         resolve();
       })
