@@ -17,6 +17,39 @@ export async function availableMaps(): Promise<string[]> {
   });
 }
 
+export async function availableProfiles(): Promise<string[]> {
+  return new Promise<string[]>((resolve, reject) => {
+    cmd(ExwayzManagerCommands.GET_PROFILE)
+      .then((res) => {
+        const profilesList = res.split('profiles:')[1];
+        resolve(
+          profilesList
+            .split('\n')
+            .filter((item) => item.length > 0 && item.startsWith('  -'))
+            .map((item) => item.slice(4))
+        );
+      })
+      .catch(() => reject());
+  });
+}
+
+export async function availableStates(): Promise<string[]> {
+  return new Promise<string[]>((resolve, reject) => {
+    cmd(ExwayzManagerCommands.GET_PROFILE)
+      .then((res) => {
+        const tmp = res.split('states:')[1];
+        const statesList = tmp.split('profiles:')[0];
+        resolve(
+          statesList
+            .split('\n')
+            .filter((item) => item.length > 0 && item.startsWith('  -'))
+            .map((item) => item.slice(4))
+        );
+      })
+      .catch(() => reject());
+  });
+}
+
 export async function managerState(): Promise<ManagerState> {
   return new Promise<ManagerState>((resolve, reject) => {
     cmd(ExwayzManagerCommands.MANAGER_STATE)

@@ -14,6 +14,17 @@ export default (app: Router) => {
     return res.status(200).json(maps);
   });
 
+  route.get('/available_profiles', async (req, res, next) => {
+    const profiles = await Status.availableProfiles();
+    return res.status(200).json(profiles);
+  });
+
+  route.get('/available_states', async (req, res, next) => {
+    const states = await Status.availableStates();
+    return res.status(200).json(states);
+  });
+
+
   route.get('/state', async (req, res, next) => {
     await Status.managerState()
       .then((state) => {

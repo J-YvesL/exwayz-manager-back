@@ -105,6 +105,18 @@ export function initializeReloc(x: string, y: string, z: string, angle: string):
   });
 }
 
+export function setProfile(state: string, profile: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const str = ExwayzManagerCommands.SET_PROFILE.replace('{state}', state)
+      .replace('{profile}', profile);
+    cmd(str)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => reject());
+  });
+}
+
 export function stopAll(): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     cmd(ExwayzManagerCommands.STOP_ALL)
