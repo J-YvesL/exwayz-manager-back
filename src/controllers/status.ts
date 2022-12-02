@@ -1,6 +1,7 @@
 import { cmd } from '@/helpers/cmd';
 import { ManagerState } from '@/models/managerState';
 import { ExwayzManagerCommands } from '@/models/commandsEnum';
+import { ProfileOptions } from '@/models/profileOptions';
 
 export async function availableMaps(): Promise<string[]> {
   return new Promise<string[]>((resolve, reject) => {
@@ -14,6 +15,26 @@ export async function availableMaps(): Promise<string[]> {
         );
       })
       .catch(() => reject());
+  });
+}
+
+// TODO: refactor when ROS service is implemented
+// BEGIN
+// MOCK
+export async function availableProfilesOptions(): Promise<ProfileOptions[]> {
+  return new Promise<ProfileOptions[]>((resolve, reject) => {
+    // TODO: replace this mock with cmd call to ROS service
+    const mockOptions = [
+      {
+        profileName: 'slam',
+        options: ['narrow', 'wide']
+      },
+      {
+        profileName: 'reloc',
+        options: ['narrow', 'wide']
+      }
+    ];
+    resolve(mockOptions);
   });
 }
 
@@ -49,6 +70,7 @@ export async function availableStates(): Promise<string[]> {
       .catch(() => reject());
   });
 }
+//END
 
 export async function managerState(): Promise<ManagerState> {
   return new Promise<ManagerState>((resolve, reject) => {
