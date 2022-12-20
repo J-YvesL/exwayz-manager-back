@@ -14,19 +14,14 @@ export default (app: Router) => {
     return res.status(200).json(maps);
   });
 
-  route.get('/available_profiles_options', async (req, res, next) => {
-    const profiles = await Status.availableProfilesOptions();
+  route.get('/all_profiles', async (req, res, next) => {
+    const profiles = await Status.allProfiles();
     return res.status(200).json(profiles);
   });
 
-  route.get('/available_profiles', async (req, res, next) => {
-    const profiles = await Status.availableProfiles();
+  route.get('/current_profiles', async (req, res, next) => {
+    const profiles = await Status.currentProfiles();
     return res.status(200).json(profiles);
-  });
-
-  route.get('/available_states', async (req, res, next) => {
-    const states = await Status.availableStates();
-    return res.status(200).json(states);
   });
 
   route.get('/state', async (req, res, next) => {

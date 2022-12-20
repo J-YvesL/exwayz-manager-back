@@ -2,7 +2,8 @@ export enum ExwayzManagerCommands {
   // STATUS
   AVAILABLE_MAPS = 'rosservice call /exwayz_manager/map_list',
   MANAGER_STATE = 'rosservice call /exwayz_manager/get_state',
-  GET_PROFILE = 'rosservice call /exwayz_manager/get_profile',
+  GET_PROFILE_ALL = 'rosservice call /exwayz_manager/get_profiles_all',
+  GET_PROFILE_CURRENT = 'rosservice call /exwayz_manager/get_profiles_current',
 
   // COMMANDS
   START_SLAM = 'rosservice call /exwayz_manager/slam_start "viz: false"',
@@ -16,5 +17,5 @@ export enum ExwayzManagerCommands {
   INIT_RELOC = 'rosservice call /exwayz_manager/set_initial_pose "initial_pose:position: \n x: {reloc_x} \n  y: {reloc_y} \n  z: {reloc_z} \n  orientation: \n  x: 0.0 \n  y: 0.0 \n  z: {angle}  \n w: 0.0”',
   REINIT_RELOC = 'rosservice call /exwayz_manager/reloc_reinit',
   STOP_ALL = 'rosservice call /exwayz_manager/stop_all',
-  SET_PROFILE = "rosservice call /exwayz_manager/set_profile \"state: '{state}' profile: '{profile}'\" ",
+  SET_PROFILE = "rosservice call /exwayz_manager/set_profile '{algo}' '{value}'",
 }

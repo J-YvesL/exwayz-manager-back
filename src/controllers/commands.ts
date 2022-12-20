@@ -105,10 +105,10 @@ export function initializeReloc(x: string, y: string, z: string, angle: string):
   });
 }
 
-export function setProfile(state: string, profile: string): Promise<void> {
+export function setProfile(algo: string, value: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    const str = ExwayzManagerCommands.SET_PROFILE.replace('{state}', state)
-      .replace('{profile}', profile);
+    const str = ExwayzManagerCommands.SET_PROFILE.replace('{algo}', algo)
+      .replace('{value}', value);
     cmd(str)
       .then(() => {
         resolve();

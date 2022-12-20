@@ -2,6 +2,7 @@ import { cmd } from '@/helpers/cmd';
 import { ManagerState } from '@/models/managerState';
 import { ExwayzManagerCommands } from '@/models/commandsEnum';
 import { ProfileOptions } from '@/models/profileOptions';
+import { ProfileCurrent } from '@/models/profileCurrent';
 
 export async function availableMaps(): Promise<string[]> {
   return new Promise<string[]>((resolve, reject) => {
@@ -18,59 +19,54 @@ export async function availableMaps(): Promise<string[]> {
   });
 }
 
-// TODO: refactor when ROS service is implemented
-// BEGIN
-// MOCK
-export async function availableProfilesOptions(): Promise<ProfileOptions[]> {
+export async function currentProfiles(): Promise<ProfileCurrent[]> {
+  return new Promise<ProfileCurrent[]>((resolve, reject) => {
+
+    cmd(ExwayzManagerCommands.GET_PROFILE_CURRENT)
+      .then((res) => {
+        const profiles_list = res.split('profiles:')[0].split('\n');
+        var profiles = [];
+        for (const profile of profiles_list) {
+          if (profile.length > 0 && profile.startsWith('  -')) {
+            const s = profile.slice(4).split(':');
+            const p: ProfileCurrent = { 'algo':s[0], 'value':s[1] };
+            profiles.push(p);
+          }
+        }
+        resolve(profiles)
+      })
+      .catch(() => reject());
+  });
+}
+
+export async function allProfiles(): Promise<ProfileOptions[]> {
   return new Promise<ProfileOptions[]>((resolve, reject) => {
-    // TODO: replace this mock with cmd call to ROS service
-    const mockOptions = [
-      {
-        profileName: 'slam',
-        options: ['narrow', 'wide']
-      },
-      {
-        profileName: 'reloc',
-        options: ['narrow', 'wide']
-      }
-    ];
-    resolve(mockOptions);
-  });
-}
-
-export async function availableProfiles(): Promise<string[]> {
-  return new Promise<string[]>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.GET_PROFILE)
+    cmd(ExwayzManagerCommands.GET_PROFILE_ALL)
       .then((res) => {
-        const profilesList = res.split('profiles:')[1];
-        resolve(
-          profilesList
-            .split('\n')
-            .filter((item) => item.length > 0 && item.startsWith('  -'))
-            .map((item) => item.slice(4))
-        );
-      })
-      .catch(() => reject());
+        const profiles_list = res.split('profiles:')[1].split('\n');
+        let profiles = [];
+        for (const profile of profiles_list) {
+          if (profile.length > 0 && profile.startsWith('  -')) {
+            const s = profile.slice(4).split(':');
+            var found = false;
+            for (const p of profiles) {
+              if (s[0] == p.algo) {
+                p.values.push(s[1]);
+                found = true;
+                break;
+              }
+            }
+            if(! found){
+              const new_p: ProfileOptions = { 'algo':s[0], 'values':[s[1]] };
+              profiles.push(new_p)
+            }
+          }
+        }
+        resolve(profiles)
+    })
+    .catch(() => reject());
   });
 }
-
-export async function availableStates(): Promise<string[]> {
-  return new Promise<string[]>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.GET_PROFILE)
-      .then((res) => {
-        const tmp = res.split('states:')[1];
-        const statesList = tmp.split('profiles:')[0];
-        resolve(
-          statesList
-            .split('\n')
-            .filter((item) => item.length > 0 && item.startsWith('  -'))
-            .map((item) => item.slice(4))
-        );
-      })
-      .catch(() => reject());
-  });
-}
-//END
 
 export async function managerState(): Promise<ManagerState> {
   return new Promise<ManagerState>((resolve, reject) => {

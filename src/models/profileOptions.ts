@@ -3,6 +3,6 @@
  * For example, slam can run in modes : narrow, wide, ...
  */
 export interface ProfileOptions {
-  profileName: string;
-  options: string[];
+  algo: string;
+  values: string[];
 }

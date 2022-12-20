@@ -97,10 +97,10 @@ export default (app: Router) => {
   }
 
   route.get('/set_profile', async (req, res, next) => {
-    const state = req.query.state;
-    const profile = req.query.profile;
+    const algo = req.query.algo;
+    const value = req.query.value;
 
-    await Commands.setProfile(state as string, profile as string)
+    await Commands.setProfile(algo as string, value as string)
       .then(() => {
         return res.status(200).send();
       })
