@@ -24,7 +24,7 @@ export async function currentProfiles(): Promise<ProfileCurrent[]> {
 
     cmd(ExwayzManagerCommands.GET_PROFILE_CURRENT)
       .then((res) => {
-        const profiles_list = res.split('profiles:')[0].split('\n');
+        const profiles_list = res.split('profiles:')[1].split('\n');
         var profiles = [];
         for (const profile of profiles_list) {
           if (profile.length > 0 && profile.startsWith('  -')) {
@@ -33,6 +33,7 @@ export async function currentProfiles(): Promise<ProfileCurrent[]> {
             profiles.push(p);
           }
         }
+        console.log(profiles)
         resolve(profiles)
       })
       .catch(() => reject());
@@ -62,6 +63,7 @@ export async function allProfiles(): Promise<ProfileOptions[]> {
             }
           }
         }
+        console.log(profiles)
         resolve(profiles)
     })
     .catch(() => reject());
