@@ -33,7 +33,6 @@ export async function currentProfiles(): Promise<ProfileCurrent[]> {
             profiles.push(p);
           }
         }
-        console.log(profiles)
         resolve(profiles)
       })
       .catch(() => reject());
@@ -63,7 +62,6 @@ export async function allProfiles(): Promise<ProfileOptions[]> {
             }
           }
         }
-        console.log(profiles)
         resolve(profiles)
     })
     .catch(() => reject());
