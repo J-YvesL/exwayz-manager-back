@@ -50,7 +50,7 @@ export default (app: Router) => {
       });
   });
 
-  route.get('/load_map/:map', async (req, res, next) => {
+  route.get('/load_reloc/:map', async (req, res, next) => {
     const mapName = req.params.map;
     await Commands.loadMap(mapName)
       .then(() => {
@@ -64,6 +64,17 @@ export default (app: Router) => {
   route.get('/delete_map/:map', async (req, res, next) => {
     const mapName = req.params.map;
     await Commands.deleteMap(mapName)
+      .then(() => {
+        return res.status(200).send();
+      })
+      .catch(() => {
+        return res.status(500).send();
+      });
+  });
+
+  route.get('/visualize_map/:map', async (req, res, next) => {
+    const mapName = req.params.map;
+    await Commands.visualizeMap(mapName)
       .then(() => {
         return res.status(200).send();
       })
