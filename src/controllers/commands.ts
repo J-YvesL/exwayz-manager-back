@@ -1,9 +1,10 @@
 import { cmd } from '@/helpers/cmd';
+import Logger from '@/loaders/logger';
 import { ExwayzManagerCommands } from '@/models/commandsEnum';
 
-export function startSlam(): Promise<void> {
+export function startSlam(vis: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.START_SLAM)
+    cmd(ExwayzManagerCommands.START_SLAM.replace('{vis}', vis))
       .then(() => {
         resolve();
       })
@@ -21,9 +22,11 @@ export function stopSlam(): Promise<void> {
   });
 }
 
-export function startMap(mapName: string): Promise<void> {
+export function startMap(mapName: string, vis: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.START_MAP.replace('{mapName}', mapName))
+    const str = ExwayzManagerCommands.START_MAP.replace('{mapName}', mapName)
+      .replace('{vis}', vis);
+    cmd(str)
       .then(() => {
         resolve();
       })
@@ -71,9 +74,9 @@ export function stopReloc(): Promise<void> {
   });
 }
 
-export function startReloc(): Promise<void> {
+export function startReloc(vis: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    cmd(ExwayzManagerCommands.START_RELOC)
+    cmd(ExwayzManagerCommands.START_RELOC.replace('{vis}', vis))
       .then(() => {
         resolve();
       })
@@ -120,6 +123,23 @@ export function setProfile(algo: string, value: string): Promise<void> {
 export function stopAll(): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     cmd(ExwayzManagerCommands.STOP_ALL)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => reject());
+  });
+}
+
+export function setCropBox(center_x: string, center_y: string, center_z: string, size_x: string, size_y: string, size_z: string, out: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const str = ExwayzManagerCommands.SET_CROP.replace('{crop_center_x}', center_x)
+      .replace('{center_y}', center_y)
+      .replace('{center_z}', center_z)
+      .replace('{size_x}', size_x)
+      .replace('{size_y}', size_y)
+      .replace('{size_z}', size_z)
+      .replace('{out}', out);
+    cmd(str)
       .then(() => {
         resolve();
       })

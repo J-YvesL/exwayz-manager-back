@@ -9,8 +9,9 @@ const expressConfig: ExpressConfig = config.get('express');
 export default (app: Router) => {
   app.use(expressConfig.servicesEndpoint.commands, route);
 
-  route.get('/start', async (req, res, next) => {
-    await Commands.startSlam()
+  route.get('/start/:vis', async (req, res, next) => {
+    const vis = req.params.vis
+    await Commands.startSlam(vis)
       .then(() => {
         return res.status(200).send();
       })
@@ -29,9 +30,10 @@ export default (app: Router) => {
       });
   });
 
-  route.get('/map_start/:map', async (req, res, next) => {
-    const mapName = req.params.map;
-    await Commands.startMap(mapName)
+  route.get('/map_start', async (req, res, next) => {
+    const mapName = req.query.mapName;
+    const vis = req.query.vis;
+    await Commands.startMap(mapName as string, vis as string)
       .then(() => {
         return res.status(200).send();
       })
@@ -109,6 +111,26 @@ export default (app: Router) => {
       });
   });
 
+  route.get('/set_box_crop', async (req, res, next) => {
+    const center_x = req.query.center_x;
+    const center_y = req.query.center_y;
+    const center_z = req.query.center_z;
+    const size_x = req.query.size_x;
+    const size_y = req.query.size_y;
+    const size_z = req.query.size_z;
+    const out = req.query.out;
+
+    if (validParam(center_x) && validParam(center_y) && validParam(center_z) && validParam(size_x) && validParam(size_y) && validParam(size_z)) {
+      await Commands.setCropBox(center_x as string, center_y as string, center_z as string, size_x as string, size_y as string, size_z as string, out as string)
+        .then(() => {
+          return res.status(200).send();
+        })
+        .catch(() => {
+          return res.status(500).send();
+        });
+    }
+  });
+
   route.get('/reloc_stop', async (req, res, next) => {
     await Commands.stopReloc()
       .then(() => {
@@ -119,8 +141,9 @@ export default (app: Router) => {
       });
   });
 
-  route.get('/reloc_start', async (req, res, next) => {
-    await Commands.startReloc()
+  route.get('/reloc_start/:vis', async (req, res, next) => {
+    const vis = req.params.vis;
+    await Commands.startReloc(vis)
       .then(() => {
         return res.status(200).send();
       })

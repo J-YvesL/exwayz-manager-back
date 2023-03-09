@@ -75,16 +75,18 @@ export async function managerState(): Promise<ManagerState> {
         const stateStr = res.split('"')[1];
         if (stateStr === 'idle') {
           resolve(ManagerState.IDLE);
-        } else if (stateStr === 'mapping') {
-          resolve(ManagerState.MAPPING);
+        } else if (stateStr === 'record') {
+          resolve(ManagerState.RECORD);
         } else if (stateStr === 'localizing') {
           resolve(ManagerState.LOCALIZING);
         } else if (stateStr === 'slam') {
           resolve(ManagerState.SLAM);
         } else if (stateStr === 'reloc_ready') {
           resolve(ManagerState.RELOC_READY);
-        } else if (stateStr === 'saving_map') {
-          resolve(ManagerState.SAVING_MAP);
+        } else if (stateStr === 'map_create') {
+          resolve(ManagerState.CREATE_MAP);
+        } else if (stateStr === 'error') {
+          resolve(ManagerState.ERROR);
         } else {
           resolve(ManagerState.UNKNOWN);
         }
