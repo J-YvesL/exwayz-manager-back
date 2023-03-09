@@ -10,8 +10,8 @@ export default (app: Router) => {
   app.use(expressConfig.servicesEndpoint.commands, route);
 
   route.get('/start/:vis', async (req, res, next) => {
-    const vis = req.params.vis
-    await Commands.startSlam(vis)
+    const vis = req.query.vis;
+    await Commands.startSlam(vis as string)
       .then(() => {
         return res.status(200).send();
       })
@@ -120,8 +120,23 @@ export default (app: Router) => {
     const size_z = req.query.size_z;
     const out = req.query.out;
 
-    if (validParam(center_x) && validParam(center_y) && validParam(center_z) && validParam(size_x) && validParam(size_y) && validParam(size_z)) {
-      await Commands.setCropBox(center_x as string, center_y as string, center_z as string, size_x as string, size_y as string, size_z as string, out as string)
+    if (
+      validParam(center_x) &&
+      validParam(center_y) &&
+      validParam(center_z) &&
+      validParam(size_x) &&
+      validParam(size_y) &&
+      validParam(size_z)
+    ) {
+      await Commands.setCropBox(
+        center_x as string,
+        center_y as string,
+        center_z as string,
+        size_x as string,
+        size_y as string,
+        size_z as string,
+        out as string
+      )
         .then(() => {
           return res.status(200).send();
         })
@@ -142,8 +157,8 @@ export default (app: Router) => {
   });
 
   route.get('/reloc_start/:vis', async (req, res, next) => {
-    const vis = req.params.vis;
-    await Commands.startReloc(vis)
+    const vis = req.query.vis;
+    await Commands.startReloc(vis as string)
       .then(() => {
         return res.status(200).send();
       })
