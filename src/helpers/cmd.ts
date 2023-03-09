@@ -7,6 +7,7 @@ import LoggerInstance from '@/loaders/logger';
  * @returns Stdout as string
  */
 export function cmd(command: string): Promise<string> {
+  LoggerInstance.info(`Running ROS command : ${command}`);
   return new Promise<string>((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {

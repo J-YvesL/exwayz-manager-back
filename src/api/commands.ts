@@ -9,7 +9,7 @@ const expressConfig: ExpressConfig = config.get('express');
 export default (app: Router) => {
   app.use(expressConfig.servicesEndpoint.commands, route);
 
-  route.get('/start/:vis', async (req, res, next) => {
+  route.get('/start', async (req, res, next) => {
     const vis = req.query.vis;
     await Commands.startSlam(vis as string)
       .then(() => {
@@ -156,7 +156,7 @@ export default (app: Router) => {
       });
   });
 
-  route.get('/reloc_start/:vis', async (req, res, next) => {
+  route.get('/reloc_start', async (req, res, next) => {
     const vis = req.query.vis;
     await Commands.startReloc(vis as string)
       .then(() => {
