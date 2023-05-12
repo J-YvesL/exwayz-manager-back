@@ -1,5 +1,5 @@
 import { cmd } from '@/helpers/cmd';
-import Logger from '@/loaders/logger';
+import LoggerInstance from '@/loaders/logger';
 import { ExwayzManagerCommands } from '@/models/commandsEnum';
 
 export function startSlam(vis: string): Promise<void> {
@@ -96,10 +96,17 @@ export function reinitReloc(): Promise<void> {
 
 export function initializeReloc(x: string, y: string, z: string, angle: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
+
+    // Compute the angle of rotation around z as a quaternion
+    var angle_num: number = +angle;
+    var angle_rad: number = (angle_num * Math.PI) / 180.0;
+    const reloc_qz = Math.sin(angle_rad / 2);
+    const reloc_qw = Math.cos(angle_rad / 2);
     const str = ExwayzManagerCommands.INIT_RELOC.replace('{reloc_x}', x)
       .replace('{reloc_y}', y)
       .replace('{reloc_z}', z)
-      .replace('{angle}', angle);
+      .replace('{reloc_qz}', reloc_qz.toString())
+      .replace('{reloc_qw}', reloc_qw.toString());
     cmd(str)
       .then(() => {
         resolve();

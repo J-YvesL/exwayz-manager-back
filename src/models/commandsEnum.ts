@@ -17,7 +17,8 @@ export enum ExwayzManagerCommands {
   STOP_RELOC = 'rosservice call /exwayz_manager/reloc_stop',
   REINIT_RELOC = 'rosservice call /exwayz_manager/reloc_reinit',
   START_RELOC = 'rosservice call /exwayz_manager/reloc_start "vis: {vis}"',
-  INIT_RELOC = 'rosservice call /exwayz_manager/set_initial_pose "initial_pose:position: \n x: {reloc_x} \n  y: {reloc_y} \n  z: {reloc_z} \n  orientation: \n  x: 0.0 \n  y: 0.0 \n  z: {angle}  \n w: 0.0”',
+  // INIT_RELOC = 'rosservice call /exwayz_manager/set_initial_pose "initial_pose: \n position: \n x: {reloc_x} \n  y: {reloc_y} \n  z: {reloc_z} \n orientation: \n  x: 0.0 \n  y: 0.0 \n  z: {reloc_qz}  \n w: {reloc_qw}\"',
+  INIT_RELOC = 'rosservice call /exwayz_manager/set_initial_pose "initial_pose:\n  position:\n    x: {reloc_x}\n    y: {reloc_y}\n    z: {reloc_z}\n  orientation:\n    x: 0.0\n    y: 0.0\n    z: {reloc_qz}\n    w: {reloc_qw}"',
 
   STOP_ALL = 'rosservice call /exwayz_manager/stop_all',
   SET_PROFILE = "rosservice call /exwayz_manager/set_profile '{algo}' '{value}'",
@@ -25,3 +26,5 @@ export enum ExwayzManagerCommands {
   // MISCELANEOUS
   SET_CROP = 'rosservice call /exwayz_manager/set_crop_box "center : [{center_x}, {center_y}, {center_z}]] \n size : [{size_x}, {size_y}, {size_z}] \n out: {out}"'
 }
+
+
