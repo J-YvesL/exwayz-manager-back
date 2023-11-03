@@ -6,7 +6,7 @@ export enum ExwayzManagerCommands {
   GET_PROFILE_CURRENT = 'rosservice call /exwayz_manager/get_current_profiles',
 
   // COMMANDS
-  START_SLAM = 'rosservice call /exwayz_manager/slam_start "viz: false"',
+  START_SLAM = 'rosservice call /exwayz_manager/slam_start "vis: false"',
   STOP_SLAM = 'rosservice call /exwayz_manager/slam_stop',
   START_MAP = 'rosservice call /exwayz_manager/map_start "map_name: \'{mapName}\'"',
   STOP_MAP = 'rosservice call /exwayz_manager/map_stop',

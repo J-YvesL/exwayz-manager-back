@@ -1,5 +1,6 @@
 export enum ManagerState {
   IDLE = 'IDLE',
+  ERROR = 'ERROR',
   MAPPING = 'MAPPING',
   SAVING_MAP = 'SAVING_MAP',
   RELOC_READY = 'RELOC_READY',

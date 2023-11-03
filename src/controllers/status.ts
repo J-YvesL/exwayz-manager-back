@@ -21,7 +21,6 @@ export async function availableMaps(): Promise<string[]> {
 
 export async function currentProfiles(): Promise<ProfileCurrent[]> {
   return new Promise<ProfileCurrent[]>((resolve, reject) => {
-
     cmd(ExwayzManagerCommands.GET_PROFILE_CURRENT)
       .then((res) => {
         const profiles_list = res.split('profiles:')[1].split('\n');
@@ -29,11 +28,11 @@ export async function currentProfiles(): Promise<ProfileCurrent[]> {
         for (const profile of profiles_list) {
           if (profile.length > 0 && profile.startsWith('  -')) {
             const s = profile.slice(4).split(':');
-            const p: ProfileCurrent = { 'algo':s[0], 'value':s[1] };
+            const p: ProfileCurrent = { algo: s[0], value: s[1] };
             profiles.push(p);
           }
         }
-        resolve(profiles)
+        resolve(profiles);
       })
       .catch(() => reject());
   });
@@ -56,15 +55,15 @@ export async function allProfiles(): Promise<ProfileOptions[]> {
                 break;
               }
             }
-            if(! found){
-              const new_p: ProfileOptions = { 'algo':s[0], 'values':[s[1]] };
-              profiles.push(new_p)
+            if (!found) {
+              const new_p: ProfileOptions = { algo: s[0], values: [s[1]] };
+              profiles.push(new_p);
             }
           }
         }
-        resolve(profiles)
-    })
-    .catch(() => reject());
+        resolve(profiles);
+      })
+      .catch(() => reject());
   });
 }
 
@@ -75,6 +74,8 @@ export async function managerState(): Promise<ManagerState> {
         const stateStr = res.split('"')[1];
         if (stateStr === 'idle') {
           resolve(ManagerState.IDLE);
+        } else if (stateStr === 'error') {
+          resolve(ManagerState.ERROR);
         } else if (stateStr === 'mapping') {
           resolve(ManagerState.MAPPING);
         } else if (stateStr === 'localizing') {
