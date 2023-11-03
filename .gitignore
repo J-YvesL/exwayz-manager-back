@@ -115,5 +115,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# custom
+## custom
 *.csv
+
+# build front
+static/**
